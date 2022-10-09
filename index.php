@@ -24,12 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!empty($name) && !empty($data)) {
-    $query = 'INSERT INTO games (name, platform) VALUES (:name, :platform)';
-    $statement = $pdo->prepare($query);
-    $statement->bindValue(':name', $name, \PDO::PARAM_STR);
-    $statement->bindValue(':platform', $platform, \PDO::PARAM_STR);
-    $statement->execute();
-    header('location:index.php');
+        $query = 'INSERT INTO games (name, platform) VALUES (:name, :platform)';
+        $statement = $pdo->prepare($query);
+        $statement->bindValue(':name', $name, \PDO::PARAM_STR);
+        $statement->bindValue(':platform', $platform, \PDO::PARAM_STR);
+        $statement->execute();
+        header('location:index.php');
     }
 }
 
@@ -69,5 +69,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         Add Game
     </button>
 </form>
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Platform</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $query = 'SELECT * FROM games';
+        $statement = $pdo->query($query);
+
+        $gameArr = $statement->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($gameArr as $game) {
+            echo '<tr>' .
+            '<td>' . $game['name'] . '</td>' .
+            '<td>' . $game['platform'] . '</td>' .
+        '</tr>';
+        }
+        ?>
+        </tbody>
+    </table>
+
+</div>
 </body>
 </html>
